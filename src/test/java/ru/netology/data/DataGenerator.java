@@ -12,6 +12,7 @@ import java.util.Locale;
 import static io.restassured.RestAssured.given;
 
 public class DataGenerator {
+    // спецификация нужна для того, чтобы переиспользовать настройки в разных запросах
     private static final RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
@@ -25,11 +26,13 @@ public class DataGenerator {
     }
 
     private static void sendRequest(RegistrationDto user) {
-        given()
-                .spec(requestSpec)
-                .body(user)
-                .when().post("/api/system/users")
-                .then().statusCode(200);
+        given()  // "дано"
+                .spec(requestSpec)  // указываем, какую спецификацию используем
+                .body(user)  // передаём в теле объект, который будет преобразован в JSON
+                .when()  // "когда"
+                .post("/api/system/users")  // на какой путь относительно BaseUri отправляем запрос
+                .then()  // "тогда ожидаем"
+                .statusCode(200);  // код 200 OK
     }
 
     public static String getRandomLogin() {
